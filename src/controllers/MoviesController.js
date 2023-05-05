@@ -24,6 +24,18 @@ class MoviesController{
 
    response.json()
   }
+
+  async show(request, response){
+    const { id } = request.params
+
+    const movie = await knex("movies").where({ id }).first()
+    const tags = await knex("tags").where({ movie_id: id }).orderBy("name");
+
+    return response.json({
+      ...movie,
+      tags
+    })
+  }
 }
 
 module.exports = MoviesController;
